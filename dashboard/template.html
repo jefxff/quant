@@ -10,6 +10,7 @@
   --ink:#1e1e1c; --ink-2:#5c5c57; --ink-3:#96968f;
   --accent:#42607a; --accent-soft:#eaf0f5;
   --up:#a9453c; --down:#48745c; --warn:#94693a;
+  --mc-g1:#4a4a46; --mc-g2:#73736c; --mc-g3:#9c9c94; --mc-g4:#c2c2ba;
   --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
 }
@@ -18,6 +19,7 @@ html[data-theme="dark"]{
   --ink:#ecece8; --ink-2:#a6a69f; --ink-3:#72726b;
   --accent:#8fb0ca; --accent-soft:#26313a;
   --up:#d3776c; --down:#7eae90; --warn:#c49a63;
+  --mc-g1:#d0d0c8; --mc-g2:#a9a9a1; --mc-g3:#82827b; --mc-g4:#606059;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -158,6 +160,54 @@ h3{font-size:11px;font-weight:600;color:var(--ink-2);margin:10px 0 5px}
 .fc-lab{fill:var(--accent);font-size:10px;font-family:var(--mono)}
 .fc-lab2{fill:var(--ink-3);font-size:10px;font-family:var(--mono)}
 .fc-empty2{fill:var(--ink-3);font-size:11px;font-family:var(--sans)}
+.fc-cond{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:11px;color:var(--ink-2);margin-top:6px}
+.fc-cond b{font-family:var(--mono);font-weight:500;color:var(--ink);margin-left:4px}
+.fc-cond .cap{font-size:10px;color:var(--ink-3);width:100%}
+
+/* ---- 政策 · 外围市场 · 传导 ---- */
+.macro-bar{display:flex;align-items:center;gap:15px;flex-wrap:wrap;padding:7px 0;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink-2)}
+.macro-bar .mb-title{color:var(--ink-3);font-size:10.5px}
+.macro-bar .mk{white-space:nowrap;font-family:var(--mono)}
+.macro-bar .mk b{font-weight:500;margin-left:5px}
+.macro-bar .mk .dt{font-family:var(--sans);font-size:10px;color:var(--ink-3);margin-left:4px}
+.macro-bar .stale{color:var(--warn);font-size:10px;margin-left:2px}
+.macro-bar .mb-tail{margin-left:auto;font-size:10.5px;color:var(--ink-3)}
+.macro-grid{display:grid;grid-template-columns:minmax(0,1.36fr) minmax(0,1fr);gap:28px;margin-top:16px}
+.mc-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--ink-2)}
+.mc-head .cap{font-size:10px;color:var(--ink-3)}
+.mc-range{display:flex;gap:4px}
+.mc-range button{font-size:10.5px;color:var(--ink-3);padding:2px 7px}
+.mc-range button.on{color:var(--ink);border-bottom:1px solid var(--accent)}
+#macroChart{display:block;width:100%;height:auto;margin-top:5px}
+.mc-grid{stroke:var(--line-soft);stroke-width:1}
+.mc-axis{fill:var(--ink-3);font-size:10px;font-family:var(--mono)}
+.mc-ev{stroke:var(--line);stroke-width:1;stroke-dasharray:3 3}
+.mc-ev-txt{fill:var(--ink-3);font-size:9.5px;font-family:var(--mono)}
+.mc-line{fill:none;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+.mc-hs{stroke:var(--accent);stroke-width:1.8}
+.mc-spx{stroke:var(--mc-g1)}
+.mc-ndx{stroke:var(--mc-g2);stroke-dasharray:5 3}
+.mc-nky{stroke:var(--mc-g3);stroke-dasharray:2 3}
+.mc-ks{stroke:var(--mc-g4);stroke-dasharray:1 3}
+.mc-legend{display:flex;gap:13px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-2);margin:2px 0 2px}
+.mc-legend i{display:inline-block;width:14px;height:1px;vertical-align:middle;margin-right:5px;background:var(--accent)}
+.mc-legend i.spx{background:var(--mc-g1)}
+.mc-legend i.ndx{background:var(--mc-g2)}
+.mc-legend i.nky{background:var(--mc-g3)}
+.mc-legend i.ks{background:var(--mc-g4)}
+.mc-tbl td,.mc-tbl th{font-size:10.5px;padding:5px 5px}
+.mc-tbl td:first-child{text-align:left;font-family:var(--sans)}
+.tl-list{list-style:none;font-size:11px}
+.tl-item{display:grid;grid-template-columns:62px 40px 1fr;gap:8px;padding:6px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+.tl-item:last-child{border-bottom:0}
+.tl-item .d{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.tl-item .tg{font-size:10px;color:var(--ink-3);border:1px solid var(--line);text-align:center;white-space:nowrap}
+.tl-item .tg.risk{color:var(--up)}
+.tl-item .tg.support{color:var(--down)}
+.tl-item .tx{color:var(--ink-2);line-height:1.45}
+.tl-item .tx b{font-weight:500;color:var(--ink);display:block}
+.tl-item .tx .src{font-size:10px;color:var(--ink-3)}
+.mc-bound{font-size:10.5px;color:var(--ink-3);line-height:1.55;margin-top:9px;padding-top:7px;border-top:1px solid var(--line-soft)}
 .fc-tbl td,.fc-tbl th{padding:5px 4px;font-size:11px}
 .fc-tbl td .r{font-size:10px;color:var(--ink-3);margin-left:4px}
 .fc-metrics{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:11px;color:var(--ink-2);margin-top:8px;padding-top:7px;border-top:1px solid var(--line-soft)}
@@ -177,7 +227,8 @@ footer .stats{font-family:var(--mono);text-align:right;white-space:nowrap}
 
 @media(max-width:1000px){
   .wrap{padding:0 20px 20px}
-  .grid,.grid-2,.grid-3{grid-template-columns:1fr;gap:20px}
+  .grid,.grid-2,.grid-3,.macro-grid{grid-template-columns:1fr;gap:20px}
+  .macro-bar .mb-tail{margin-left:0}
   .strat-bar .sb-fc{margin-left:0}
   .kpis{grid-template-columns:repeat(3,1fr)}
   .kpi:nth-child(3){border-right:0}
@@ -219,6 +270,8 @@ footer .stats{font-family:var(--mono);text-align:right;white-space:nowrap}
     <span id="stratBarState">—</span>
     <span class="sb-fc" id="stratBarFc">—</span>
   </div>
+
+  <div class="macro-bar" id="macroBar">外围市场载入中…</div>
 
   <div class="grid">
     <section>
@@ -294,6 +347,7 @@ footer .stats{font-family:var(--mono);text-align:right;white-space:nowrap}
           <tbody id="sigBody"></tbody>
         </table>
         <div class="more" id="sigMore"></div>
+        <div class="mc-bound" id="stratBoundary"></div>
       </div>
     </section>
 
@@ -316,12 +370,54 @@ footer .stats{font-family:var(--mono);text-align:right;white-space:nowrap}
           <tbody id="fcBody"></tbody>
         </table>
         <div class="fc-metrics" id="fcMetrics"></div>
+        <div class="fc-cond" id="fcCond"></div>
         <h3>策略动作计划 <span class="dim" style="font-weight:400">规则驱动，非行情预测</span></h3>
         <ul class="plan" id="fcPlan"></ul>
         <div class="disc" id="fcDisc"></div>
       </div>
     </section>
   </div>
+
+  <section>
+    <div class="sec-head" style="margin-top:18px">
+      <h2>政策 · 外围市场 · 传导</h2>
+      <div class="hint" id="macroHint">—</div>
+    </div>
+    <div class="macro-grid">
+      <div class="card pad">
+        <div class="mc-head">
+          <span>外围指数归一化走势 <span class="cap">当前视图起点 = 1.00 · 按 A 股交易日对齐，缺失不填补 · <span id="mcAsOf">—</span></span></span>
+          <span class="mc-range"><button type="button" id="mcAll">全期</button><button type="button" id="mcRecent" class="on">近 120 日</button></span>
+        </div>
+        <svg id="macroChart" viewBox="0 0 760 210" role="img" aria-label="沪深300与美日韩主要指数归一化走势"></svg>
+        <div class="mc-legend">
+          <span><i></i>沪深300</span><span><i class="spx"></i>标普500</span>
+          <span><i class="ndx"></i>纳斯达克</span><span><i class="nky"></i>日经225</span>
+          <span><i class="ks"></i>韩国KOSPI</span>
+        </div>
+        <h3>跨市场传导统计 <span class="dim" style="font-weight:400">已知外围冲击 → 次日 A 股收益 · 全区间样本</span></h3>
+        <table class="mc-tbl">
+          <thead><tr><th>市场</th><th>最新收盘</th><th>60日相关</th><th>隔夜β</th><th>跌≥2%后次日</th><th>样本</th><th>平稳对照</th></tr></thead>
+          <tbody id="mcStats"></tbody>
+        </table>
+        <div class="mc-bound" id="mcBound"></div>
+      </div>
+      <div>
+        <div class="card pad">
+          <h3 style="margin-top:0">政策与外围事件 <span class="dim" style="font-weight:400">公开报道要点 · 非行情数据</span></h3>
+          <ul class="tl-list" id="mcEvents"></ul>
+        </div>
+        <div class="card pad" style="margin-top:14px">
+          <h3 style="margin-top:0">事件窗口真实反应 <span class="dim" style="font-weight:400">后续行情未到则留空</span></h3>
+          <table class="mc-tbl">
+            <thead><tr><th>事件日</th><th>沪深300 T+1</th><th>策略 T+1</th><th>沪深300 T+3</th><th>策略 T+3</th></tr></thead>
+            <tbody id="mcWindows"></tbody>
+          </table>
+          <div class="mc-bound" id="mcCondNote"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div class="notes" id="notes"></div>
@@ -337,13 +433,14 @@ if(typeof SNAP==='undefined'){document.getElementById('sub').textContent='数据
 if(!SNAP.strategy||!SNAP.forecast){document.getElementById('sub').textContent='快照版本过旧：请重新运行 python dashboard/build.py';return;}
 var D=SNAP.dates,EQ=SNAP.equity,POS=SNAP.positions,ORD=SNAP.orders,EV=SNAP.events,SYM=SNAP.symbols,M=SNAP.meta;
 var STG=SNAP.strategy,FC=SNAP.forecast,FD=FC.days;
+var MC=SNAP.macro||null;   /* 政策 / 外围市场传导层，旧快照可优雅降级 */
 var N=D.length,LAST=N-1,SPLIT=SNAP.split_idx;
 var ST=['待成交','已成交','已拒绝','已过期','顺延中','已取消'];
 var STC=['s-pending','s-filled','s-rejected','s-expired','s-deferred','s-pending'];
 var RS=['','涨停未成交','跌停未成交','停牌','现金不足','风控裁剪','无行情','复权因子缺失','等待下一根K线'];
 var LV=['信息','警告','异常','风控','数据','成交'];
 var LVC=['','warn','err','risk','',''];
-var state={i:LAST,playing:false,filter:'all',timer:null};
+var state={i:LAST,playing:false,filter:'all',timer:null,macroRange:'recent'};
 var $=function(id){return document.getElementById(id)};
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function pct(v,d){return (v>=0?'+':'')+(v*100).toFixed(d===undefined?2:d)+'%'}
@@ -396,6 +493,7 @@ function initStatic(){
   $('fcMethod').textContent='按滚动 '+FC.window+' 日真实收益分布抽样 '+FC.paths+' 条 '+FD+' 日路径（固定种子 '+FC.seed+'）。';
   $('fcMethod').title=FC.method;
   $('fcDisc').textContent=FC.disclaimer;
+  $('stratBoundary').textContent=MC?('外部因子边界：'+MC.boundary):'';
 }
 function renderStratBar(){
   var ss=STG.signal_state[state.i]||[0,0,0,0,0];
@@ -604,6 +702,154 @@ function renderEvents(){
   }).join('');
 }
 
+/* ---------- 政策 · 外围市场 · 传导 ---------- */
+var MCKEYS=['spx','ndx','nky','ks11'];
+var MCCLS={hs300:'mc-hs',spx:'mc-spx',ndx:'mc-ndx',nky:'mc-nky',ks11:'mc-ks'};
+var MCEV=[['2026-11-02','政策'],['2026-11-05','美股'],['2026-11-06','日韩']];
+var MW=760,MH=210,ML=44,MR=12,MT=12,MB=24;
+var MCFROM=0,MCTO=LAST;
+function MX(i){return ML+(i-MCFROM)/Math.max(1,MCTO-MCFROM)*(MW-ML-MR)}
+
+function initMacro(){
+  if(!MC){
+    $('macroBar').textContent='宏观层数据未载入：请重新运行 python dashboard/build.py';
+    $('macroHint').textContent='—';
+    $('mcStats').innerHTML='<tr><td colspan="7" class="empty">无数据</td></tr>';
+    $('mcWindows').innerHTML='<tr><td colspan="5" class="empty">无数据</td></tr>';
+    $('mcEvents').innerHTML='<li class="empty">无数据</li>';
+    return;
+  }
+  var bar='<span class="mb-title">外围市场 · 最新已收盘</span>';
+  MC.latest.forEach(function(x){
+    if(x.error||!x.date){bar+='<span class="mk">'+esc(x.name)+'<b class="dim">不可用</b></span>';return}
+    bar+='<span class="mk">'+esc(x.name)+'<b class="'+(x.pct===null?'dim':cls(x.pct))+'">'+
+      (x.pct===null?'—':pct(x.pct))+'</b><span class="dt">'+x.date.slice(5)+'</span>'+
+      (x.stale_days>0?'<span class="stale" title="最新日线较本地交易日历滞后 '+x.stale_days+' 个交易日">†'+x.stale_days+'</span>':'')+
+      '</span>';
+  });
+  bar+='<span class="mb-tail">† 日线未更新 · 政策 '+MC.policy_count+' 条 / 外围事件 '+MC.global_count+' 条</span>';
+  $('macroBar').innerHTML=bar;
+  $('macroHint').textContent=MC.available_count+'/'+MC.latest.length+' 市场可用 · 真实日线 · 政策附来源';
+
+  $('mcStats').innerHTML=MCKEYS.map(function(k){
+    var st=MC.stats[k]||{},lt=null, nm=k;
+    MC.latest.forEach(function(x){if(x.key===k)lt=x});
+    MC.series.forEach(function(x){if(x.key===k)nm=x.name});
+    function f(v,d){return v===null||v===undefined?'—':Number(v).toFixed(d===undefined?2:d)}
+    function pc(v){return v===null||v===undefined?'—':pct(v)}
+    return '<tr><td class="name">'+esc(nm)+'</td>'+
+      '<td>'+(lt&&lt.date?pc(lt.pct)+'<span class="dim"> '+lt.date.slice(5)+'</span>':'—')+'</td>'+
+      '<td>'+f(st.corr_60)+'</td><td>'+f(st.beta)+'</td>'+
+      '<td class="'+(st.down_mean===null?'dim':cls(st.down_mean))+'">'+pc(st.down_mean)+'</td>'+
+      '<td>'+(st.down_n||0)+'</td>'+
+      '<td class="'+(st.flat_mean===null?'dim':cls(st.flat_mean))+'">'+pc(st.flat_mean)+'</td></tr>';
+  }).join('');
+  $('mcEvents').innerHTML=MC.events.map(function(e){
+    var host=e.url.replace(/^https?:\/\//,'').split('/')[0];
+    return '<li class="tl-item"><span class="d">'+e.date.slice(5)+'</span>'+
+      '<span class="tg '+esc(e.tone)+'">'+esc(e.tag)+'</span>'+
+      '<span class="tx"><b>'+esc(e.title)+'</b>'+esc(e.detail)+
+      '<span class="src" title="'+esc(e.url)+'">来源：'+esc(e.source)+' · '+esc(host)+'</span></span></li>';
+  }).join('');
+  $('mcWindows').innerHTML=MC.events.filter(function(e){return e.days_left>=1}).map(function(e){
+    function td(v){return '<td class="'+(v===null?'dim':cls(v))+'">'+(v===null?'—':pct(v))+'</td>'}
+    return '<tr><td class="name">'+e.date.slice(5)+' <span class="dim">'+esc(e.tag)+'</span></td>'+
+      td(e.bench.t1)+td(e.nav.t1)+td(e.bench.t3)+td(e.nav.t3)+'</tr>';
+  }).join('')||'<tr><td colspan="5" class="empty">后续行情未到</td></tr>';
+  $('mcBound').textContent=MC.boundary+' '+MC.disclaimer;
+  $('mcCondNote').textContent=MC.conditional.method+' '+MC.conditional.disclaimer;
+}
+
+function renderMacroChart(){
+  if(!MC)return;
+  var upto=state.i,keys=['hs300'].concat(MCKEYS);
+  /* 全期视图固定坐标；近 120 日视图以回放日为右端，把政策/冲击窗口拉开 */
+  var from=state.macroRange==='recent'?Math.max(0,upto-119):0;
+  var to=state.macroRange==='recent'?upto:LAST;
+  MCFROM=from;MCTO=to;
+  /* 按当前视图起点重新归一化：全期看累计表现，近 120 日看事件窗口内的相对波动 */
+  var norm={};
+  keys.forEach(function(k){
+    var arr=MC.curves[k]||[],base=null;
+    for(var i=from;i<=to;i++){
+      if(arr[i]!==null&&arr[i]!==undefined&&isFinite(arr[i])&&arr[i]>0){base=arr[i];break}
+    }
+    norm[k]=base?arr.map(function(v){return (v===null||v===undefined||!isFinite(v))?null:v/base}):arr;
+  });
+  var lo=Infinity,hi=-Infinity;
+  keys.forEach(function(k){
+    var arr=norm[k]||[];
+    for(var i=from;i<=to;i++){
+      var v=arr[i];
+      if(v!==null&&v!==undefined&&isFinite(v)){if(v<lo)lo=v;if(v>hi)hi=v}
+    }
+  });
+  if(!isFinite(lo)){lo=0.9;hi=1.8}
+  var pad=(hi-lo)*0.08||0.05;lo-=pad;hi+=pad;
+  function MY(v){return MT+(hi-v)/(hi-lo)*(MH-MT-MB)}
+  var s='';
+  for(var t=0;t<4;t++){
+    var v=lo+(hi-lo)*t/3,y=MY(v);
+    s+='<line class="mc-grid" x1="'+ML+'" y1="'+y.toFixed(1)+'" x2="'+(MW-MR)+'" y2="'+y.toFixed(1)+'"/>'+
+       '<text class="mc-axis" x="'+(ML-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end">'+v.toFixed(2)+'</text>';
+  }
+  var span=to-from;
+  [from,Math.floor(from+span/3),Math.floor(from+2*span/3),to].forEach(function(i,j){
+    s+='<text class="mc-axis" x="'+MX(i).toFixed(1)+'" y="'+(MH-6)+'" text-anchor="'+
+       (j===0?'start':(j===3?'end':'middle'))+'">'+D[i].slice(2,7)+'</text>';
+  });
+  if(state.macroRange==='all'){
+    /* 5 个交易日在 689 天尺度上只有几像素，合并为一个窗口标记避免标签重叠 */
+    MCEV.forEach(function(ev){
+      var idx=D.indexOf(ev[0]);
+      if(idx<0||idx>upto)return;
+      s+='<line class="mc-ev" x1="'+MX(idx).toFixed(1)+'" y1="'+MT+'" x2="'+MX(idx).toFixed(1)+'" y2="'+(MH-MB)+'"/>';
+    });
+    s+='<text class="mc-ev-txt" x="'+(MW-MR)+'" y="'+(MT+10)+'" text-anchor="end">11/02 政策 · 11/05 美股 · 11/06 日韩</text>';
+  }else{
+    MCEV.forEach(function(ev,j){
+      var idx=D.indexOf(ev[0]);
+      if(idx<from||idx>upto)return;
+      var x=MX(idx).toFixed(1);
+      s+='<line class="mc-ev" x1="'+x+'" y1="'+MT+'" x2="'+x+'" y2="'+(MH-MB)+'"/>'+
+         '<text class="mc-ev-txt" x="'+(MX(idx)-4).toFixed(1)+'" y="'+(MT+10+j*12)+
+         '" text-anchor="end">'+ev[1]+' '+ev[0].slice(5)+'</text>';
+    });
+  }
+  keys.forEach(function(k){
+    var arr=norm[k]||[],parts=[],pen=false;
+    for(var i=from;i<=upto;i++){
+      var v=arr[i];
+      if(v===null||v===undefined||!isFinite(v)){pen=false;continue}
+      parts.push((pen?'L':'M')+MX(i).toFixed(1)+' '+MY(v).toFixed(1));pen=true;
+    }
+    if(parts.length)s+='<path class="mc-line '+MCCLS[k]+'" d="'+parts.join(' ')+'"/>';
+  });
+  s+='<line class="cursor" x1="'+MX(upto).toFixed(1)+'" y1="'+MT+'" x2="'+MX(upto).toFixed(1)+'" y2="'+(MH-MB)+'"/>';
+  $('macroChart').innerHTML=s;
+  $('mcAsOf').textContent='第 '+(upto+1)+' / '+N+' 天 · '+D[upto];
+}
+
+/* ---------- 5 日推演：外围承压条件情景（与无条件推演并列） ---------- */
+function renderFcCond(i){
+  if(!MC){$('fcCond').innerHTML='';return}
+  var c=MC.conditional.data[i],f=FC.data[i];
+  var head='<span class="cap">外部条件情景 · 仅从历史「外围冲击 ≤ '+
+    (MC.conditional.threshold*100).toFixed(0)+'%」起点抽样（'+MC.conditional.paths+' 条路径）</span>';
+  if(!c){
+    $('fcCond').innerHTML=head+'<span class="dim">该检查点历史样本不足 '+
+      MC.conditional.min_samples+' 个起点，不推演（不编造数据）</span>';
+    return;
+  }
+  var q=c[0][FD-1],b=f?f[0][FD-1][1]:null;
+  $('fcCond').innerHTML=head+
+    '<span>承压 P50<b class="'+cls(q[1]-1)+'">'+pct(q[1]-1)+'</b></span>'+
+    '<span>区间<b>'+pct(q[0]-1)+' ~ '+pct(q[2]-1)+'</b></span>'+
+    '<span>下跌概率<b>'+(c[1]*100).toFixed(1)+'%</b></span>'+
+    '<span>历史起点<b>'+c[2]+' 个</b></span>'+
+    (b!==null?'<span>无条件 P50<b>'+pct(b-1)+'</b></span>':'');
+}
+
 /* ---------- 未来 5 日专用曲线：独立局部纵轴，把 ±2% 的情景展开成可读曲线 ---------- */
 function renderFcChart(f,i,wd){
   if(!f){
@@ -669,11 +915,11 @@ function renderForecast(){
   if(!f){
     $('fcBody').innerHTML='<tr><td colspan="5" class="empty">历史样本不足 30 个交易日，暂不推演</td></tr>';
     $('fcMetrics').innerHTML='';$('fcPlan').innerHTML='';
-    renderFcChart(null,i,null);
+    renderFcChart(null,i,null);renderFcCond(i);
     return;
   }
   var wd=workdaysAfter(D[i],FD);
-  renderFcChart(f,i,wd);
+  renderFcChart(f,i,wd);renderFcCond(i);
   function cell(q,mult){
     return '<td class="'+cls(q-1)+'">'+num(mult*q,4)+'<span class="r">'+pct(q-1)+'</span></td>';
   }
@@ -732,7 +978,7 @@ function renderPlan(f,i,wd){
 
 /* ---------- 时间轴 ---------- */
 function renderAll(){
-  renderKpi();renderChart();renderPos();renderFlow();renderEvents();renderStratBar();renderForecast();
+  renderKpi();renderChart();renderPos();renderFlow();renderEvents();renderStratBar();renderForecast();renderMacroChart();
   $('slider').value=state.i;
   $('tlDate').textContent=D[state.i];
   $('tlCount').textContent='第 '+(state.i+1)+' / '+N+' 天'+(state.playing?' · 回放中':'');
@@ -764,7 +1010,10 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'){stop();state.i=Math.min(LAST,state.i+1);renderAll()}
   if(e.key==='ArrowLeft'){stop();state.i=Math.max(0,state.i-1);renderAll()}
 });
+$('mcAll').addEventListener('click',function(){state.macroRange='all';$('mcAll').classList.add('on');$('mcRecent').classList.remove('on');renderMacroChart()});
+$('mcRecent').addEventListener('click',function(){state.macroRange='recent';$('mcRecent').classList.add('on');$('mcAll').classList.remove('on');renderMacroChart()});
 initStatic();
+initMacro();
 renderAll();
 setTimeout(function(){if(!state.playing&&state.i===LAST)play()},1300);
 })();

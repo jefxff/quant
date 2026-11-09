@@ -35,9 +35,13 @@ HERE = Path(__file__).resolve().parent
 CACHE = HERE / "cache"
 PROJECT = HERE.parent
 sys.path.insert(0, str(PROJECT / "src"))
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
 
 import numpy as np
 import pandas as pd
+
+import macro as macro_mod  # 政策 / 外围市场传导层（真实数据，不改回测绩效）
 
 from quant.backtest import costs, rules  # 复用项目唯一的成本/规则实现
 
@@ -816,6 +820,16 @@ def main() -> int:
         f"5 日情景推演 {sum(1 for x in forecast['data'] if x)} 个检查点 / "
         f"{forecast['paths']} 条路径")
 
+    log("[4.6/5] 宏观政策与外围市场传导层（真实数据，不改回测绩效）...")
+    gseries = macro_mod.fetch_global_series(
+        CACHE / "global", args.offline, START,
+        on_event=lambda text: event(dates[-1], 4, text),
+    )
+    macro = macro_mod.build_macro(gseries, dates, index_close, bt["equity"])
+    log(f"      外围市场 {macro['available_count']}/{len(macro['latest'])} 可用 · "
+        f"真实政策/事件 {len(macro['events'])} 条 · "
+        f"外围承压情景 {sum(1 for x in macro['conditional']['data'] if x)} 个检查点")
+
     waiting = sum(1 for o in bt["orders"] if o["status"] == STATUS["pending"])
     if waiting:
         event(dates[-1], 0, f"最新收盘已生成 {waiting} 笔 pending 订单，等待 T+1 开盘（waiting_for_next_bar）；本地库尚无下一交易日行情")
@@ -843,6 +857,13 @@ def main() -> int:
         if txt not in have:
             raw_all.append((d, lv, txt))
             have.add(txt)
+    # 真实政策 / 外围市场事件进入运行事件流（异常筛选可见），不参与回测信号
+    for e in macro["events"]:
+        if e["trade_date"] in dset:
+            txt = f"{e['tag']}｜{e['title']}（{e['source']}）"
+            if txt not in have:
+                raw_all.append((e["trade_date"], 1 if e["tone"] == "risk" else 0, txt))
+                have.add(txt)
     ev_idx = {d: i for i, d in enumerate(dates)}
     # 采集期事件（带时间戳、不在交易日历内）归到最新交易日，符合"今天采集"的真实时间。
     events = sorted(
@@ -878,6 +899,7 @@ def main() -> int:
         "summary": bt["summary"],
         "strategy": strategy,
         "forecast": forecast,
+        "macro": macro,
         "notes": [
             "行情为免费公开接口采集的真实 A 股不复权日线，未做任何随机生成或缺失填补。",
             "前复权价由真实涨跌幅连乘构造，仅用于双均线信号；成交价、涨跌停与滑点一律用不复权价。",
@@ -885,6 +907,8 @@ def main() -> int:
             "信号在 T 日收盘后生成，最早按 T+1 开盘价成交；停牌最多顺延 3 个交易日。",
             "固定参数跑全程后按最后 20% 切分样本外，不存在两段式参数泄漏。",
             "「后续 5 日」为基于真实历史收益分布的蒙特卡洛情景推演，不是行情数据、不参与回测、不构成投资建议。",
+            "政策与美日韩市场层使用真实免费日线与公开报道要点（附来源），异常值如实剔除、不填补；"
+            "仅用于观察、传导统计与「外围承压」条件情景抽样，未进入回测信号，历史绩效未被改写。",
             "未接入实盘、未使用付费 API、miniQMT 不在首版范围。",
         ],
     }
