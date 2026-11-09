@@ -1,0 +1,13 @@
+symbol,name,industry,board,in_date,out_date,source
+000001.SZ,平安银行,银行,MAIN,2022-01-04,,fixture
+000002.SZ,万科A,房地产,MAIN,2022-01-04,,fixture
+000004.SZ,ST测试,综合,ST,2022-01-04,,fixture
+000651.SZ,格力电器,家用电器,MAIN,2022-01-04,,fixture
+300750.SZ,宁德时代,电池,CYB,2022-01-04,,fixture
+600000.SH,浦发银行,银行,MAIN,2022-01-04,,fixture
+600030.SH,中信证券,证券,MAIN,2022-01-04,,fixture
+600036.SH,招商银行,银行,MAIN,2022-01-04,,fixture
+600519.SH,贵州茅台,白酒,MAIN,2022-01-04,,fixture
+601318.SH,中国平安,保险,MAIN,2022-01-04,,fixture
+688981.SH,中芯国际,半导体,KCB,2022-01-04,,fixture
+830001.BJ,北交测试,机械,BSE,2022-01-04,,fixture

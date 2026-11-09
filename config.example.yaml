@@ -1,0 +1,58 @@
+# QUANT-001 默认配置模板。复制为 config.yaml 后按需修改。
+# 配置优先级：CLI > 环境变量(QUANT_*) > config.yaml > 内置默认值。
+database:
+  path: data/quant.db
+
+data:
+  source: baostock              # baostock | akshare | fixture(仅离线测试)
+  fallback_sources: [akshare]   # 主源失败后的降级顺序
+  pool: hs300                   # 股票池名称
+  adjust: qfq                   # 信号口径（存储恒为不复权 OHLCV + adj_factor）
+  start: "2018-01-01"
+  end: "2025-12-31"
+  limit: 30                     # 按股票池顺序取前 N，非随机
+  max_retries: 3                # R-012 单源最大重试次数
+  retry_base_interval: 1.0      # R-012 重试间隔 = base * 2^retry_count (秒)
+  page_size: 500                # R-013 分页大小，默认 500 条/批
+  request_timeout: 20
+
+universe:
+  exclude_non_main: true        # R-014 首版默认过滤非 MAIN 标的
+
+costs:
+  commission_rate: 0.00025      # 万 2.5
+  commission_min: 5.0           # 最低 5 元
+  stamp_tax_rate: 0.0005        # 卖出单边 0.05%
+  slippage_rate: 0.0001         # 万 1，买入向上/卖出向下
+
+rules:
+  lot_size: 100
+  price_limit_pct: 0.10         # 仅沪深主板 ±10% 近似
+  max_suspension_days: 3
+  suspension_expiry_days: 3
+
+backtest:
+  strategy: dual_ma
+  initial_cash: 1000000.0
+  out_of_sample_ratio: 0.20
+  short_window: 20
+  long_window: 60
+  vol_lookback: 20
+  vol_target: 0.15
+  risk_free_rate: 0.0
+
+risk:
+  max_single_weight: 0.10
+  max_total_weight: 0.80
+  drawdown_trigger: 0.10
+  braked_max_total_weight: 0.40  # 触发后降仓（固定策略，非暂停开仓）
+  drawdown_release: 0.05
+  release_days: 10
+
+paper:
+  strategy: dual_ma
+  initial_cash: 1000000.0
+
+report:
+  out_dir: reports
+  make_png: true

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>QUANT 操作台</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>QUANT 操作台</h1>
+      <p>A 股日频 · 事件驱动回测 · 模拟盘 · 零付费 API</p>
+    </div>
+    <div class="topbar-meta">
+      <span>目录 <b id="metaRoot" title="">载入中…</b></span>
+      <span id="metaPy">—</span>
+      <span>仅本机</span>
+      <button type="button" class="link-btn" id="btnTheme">切换深色</button>
+    </div>
+  </header>
+
+  <section class="progress" aria-label="离线闭环进度">
+    <div class="progress-head">
+      <span class="section-label">离线闭环</span>
+      <span id="railStatus">待运行 · 7 步</span>
+    </div>
+    <div class="progress-track" aria-hidden="true"><div id="railFill"></div></div>
+    <ol class="progress-steps" id="railSteps"></ol>
+  </section>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="block">
+        <h2>运行参数</h2>
+        <p class="hint">离线演示数据仅覆盖 <b id="demoHint">2022-01-04 ~ 2022-12-30</b>。其他年份请先联网更新，本地库有数据后再回测。</p>
+        <div class="field-grid">
+          <label class="field"><span>开始日期</span><input id="pStart" type="text" inputmode="numeric" autocomplete="off"></label>
+          <label class="field"><span>结束日期</span><input id="pEnd" type="text" inputmode="numeric" autocomplete="off"></label>
+          <label class="field"><span>标的数量</span><input id="pLimit" type="number" min="1" max="5000" step="1"></label>
+          <label class="field"><span>股票池</span><input id="pPool" type="text" autocomplete="off"></label>
+          <label class="field"><span>策略</span><input id="pStrategy" type="text" autocomplete="off"></label>
+          <label class="field"><span>交易日</span><input id="pDate" type="text" autocomplete="off"></label>
+          <label class="field wide"><span>数据库路径</span><input id="pDb" type="text" autocomplete="off"></label>
+          <label class="field wide"><span>报告 run_id</span><input id="pRunId" type="text" autocomplete="off"></label>
+        </div>
+        <button type="button" class="link-btn reset" id="btnResetParams">恢复离线默认参数</button>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><h2>操作</h2><span class="count" id="actionCount">—</span></div>
+        <button type="button" class="btn-primary" id="btnPipeline">
+          <strong>运行离线闭环</strong>
+          <small>按演示区间依次执行 7 步，与上方日期无关</small>
+        </button>
+        <div id="actionGroups" class="action-groups"></div>
+      </section>
+
+      <section class="block notes">
+        <h2>说明</h2>
+        <ul>
+          <li>未接入实盘，未使用付费 API</li>
+          <li>miniQMT 不在首版范围</li>
+          <li>回测与模拟盘只读本地 SQLite</li>
+          <li>当前成分回溯历史存在幸存者偏差</li>
+        </ul>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <nav class="tabs" role="tablist" aria-label="工作区视图">
+        <button type="button" role="tab" aria-selected="true" data-tab="console">运行回执</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="reports">报告浏览</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="guide">使用说明</button>
+        <span class="tabs-spacer"></span>
+        <button type="button" class="link-btn" id="btnClear">清空回执</button>
+      </nav>
+
+      <div class="tab-panel" id="panelConsole" role="tabpanel">
+        <div class="console-bar">
+          <span>执行记录 <em>每次操作保留命令、退出码与原始响应</em></span>
+          <div class="counters">
+            <span>总计 <b id="cTotal">0</b></span>
+            <span>成功 <b id="cOk">0</b></span>
+            <span>失败 <b id="cBad">0</b></span>
+            <span>最近 <b id="cLast">—</b></span>
+          </div>
+        </div>
+        <div class="receipts" id="receipts">
+          <div class="empty" id="emptyState">
+            <h3>还没有执行记录</h3>
+            <p>点击左侧任意操作，或运行「离线闭环」。每条命令的响应都会原样留在这里。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel hidden" id="panelReports" role="tabpanel">
+        <div class="report-layout">
+          <div class="report-list-wrap">
+            <div class="report-list-head">
+              <h3>报告目录</h3>
+              <button type="button" class="link-btn" id="btnRefreshReports">刷新</button>
+            </div>
+            <ul class="report-list" id="reportList"><li class="muted">载入中…</li></ul>
+          </div>
+          <div class="report-view" id="reportView">
+            <div class="empty"><h3>选择一份报告</h3><p>回测或模拟盘运行后会自动生成报告；这里可查看正文、资金曲线与 CSV 产物。</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel hidden guide" id="panelGuide" role="tabpanel">
+        <h2>页面在做什么</h2>
+        <p>页面是一个只监听 <code>127.0.0.1</code> 的本地操作台。点击按钮后，浏览器把「操作 id + 参数」发给本机 Python 服务，服务端按<strong>白名单</strong>构造 <code>python -m quant …</code> 的 argv 列表执行，再原样返回命令、退出码、耗时与 stdout / stderr。命令不经过 shell，无法注入。</p>
+        <div class="guide-grid">
+          <section>
+            <h3>启动与停止</h3>
+            <pre><code>cd quant
+./.venv/Scripts/python.exe -m quant ui
+# 指定端口： -m quant ui --port 9000 --open
+# Ctrl+C 停止</code></pre>
+            <p>端口被占用时自动向后顺延，实际地址以终端输出为准。</p>
+          </section>
+          <section>
+            <h3>等价的命令行</h3>
+            <pre><code>./.venv/Scripts/python.exe -m quant data update --source fixture \
+  --pool hs300 --limit 5 --start 2022-01-04 --end 2022-12-30
+./.venv/Scripts/python.exe -m quant backtest --strategy dual_ma --limit 5
+./.venv/Scripts/python.exe -m quant paper run --date latest
+./.venv/Scripts/python.exe -m quant report --run-id latest</code></pre>
+            <p>每个按钮都会显示实际执行的完整命令，可一键复制。</p>
+          </section>
+          <section>
+            <h3>为什么日期被改成年份后仍跑 2022？</h3>
+            <p>离线演示数据只有 <b>2022-01-04 ~ 2022-12-30</b>。按「禁止伪造行情」的约束，离线灌数据不会为你选的年份编造 K 线：服务端会把该动作钳制到演示区间并在回执里说明。「离线闭环」全程使用演示区间。想跑其他年份，请先用联网更新把真实行情写入本地库。</p>
+          </section>
+          <section>
+            <h3>退出码</h3>
+            <ul class="exit-codes">
+              <li><b>0</b> 成功</li><li><b>2</b> 数据缺失</li>
+              <li><b>3</b> 网络失败</li><li><b>4</b> 校验失败</li>
+              <li><b>1</b> 其他错误</li><li><b>124</b> 执行超时</li>
+            </ul>
+          </section>
+          <section>
+            <h3>安全与边界</h3>
+            <ul>
+              <li>仅本机可访问，Host 不匹配直接 403</li>
+              <li>操作 id 与参数均做白名单 / 正则校验</li>
+              <li>同一时刻只允许一条命令</li>
+              <li>报告文件读取做了目录逃逸校验</li>
+              <li>不发送真实委托，不调用实盘接口</li>
+            </ul>
+          </section>
+          <section>
+            <h3>界面</h3>
+            <p>正文与标题统一无衬线字体，命令和数字用等宽字体保证对齐；低饱和的黑白灰配一个主色，靠留白和字号建立层次。没有渐变、噪点、阴影和动画；深色主题可在右上角切换。</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>QUANT-001 / LOCAL CONSOLE</span>
+    <span>零付费 API · 离线优先 · 不构成投资建议</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

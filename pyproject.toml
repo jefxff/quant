@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68,<80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quant"
+version = "0.1.0"
+description = "Offline-first, zero-paid-API A-share daily quant research & paper trading system (QUANT-001)"
+requires-python = ">=3.11"
+readme = "README.md"
+dependencies = [
+    "pandas>=2.0,<3",
+    "numpy>=1.24,<3",
+    "PyYAML>=6.0,<7",
+    "baostock>=0.8.8,<1",
+    "akshare>=1.14,<2",
+    "matplotlib>=3.7,<4",
+    "rich>=13,<15",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7,<10",
+]
+
+[project.scripts]
+quant = "quant.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "network: requires live network access to free data sources (skipped by default)",
+]
+addopts = "-m 'not network' -q"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+"quant" = ["web/*.html", "web/*.css", "web/*.js"]
